@@ -114,7 +114,7 @@ export default function Home() {
 
         {/* Header */}
         <div className="text-center mb-10">
-          <h1 className="text-4xl font-bold text-blue-700 mb-3">💊 FarmaciePret.com</h1>
+          <h1 className="text-4xl font-bold text-blue-700 mb-3">💊 FarmaciePret.ro</h1>
           <p className="text-gray-500 text-lg">Găsește cel mai mic preț din farmaciile de lângă tine</p>
         </div>
 
