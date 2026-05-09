@@ -105,7 +105,7 @@ export default function Admin() {
                         </div>
                         <p className="text-sm text-gray-600">💊 {r.produs_nume}</p>
                         <p className="text-lg font-bold text-blue-700 mt-1">{r.pret_raportat} RON</p>
-                        {r.observatii && <p className="text-sm text-gray-400 mt-1">"{r.observatii}"</p>}
+                        <p className="text-sm text-gray-400 mt-1">&ldquo;{r.observatii}&rdquo;</p>
                         <p className="text-xs text-gray-300 mt-1">{new Date(r.creat_la).toLocaleDateString("ro-RO")}</p>
                       </div>
                       <div className="flex flex-col gap-2">
