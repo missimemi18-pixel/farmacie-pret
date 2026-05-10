@@ -92,7 +92,7 @@ export default function Admin() {
           {["import", "raportari", "farmacii", "produse", "preturi"].map(t => (
             <button key={t} onClick={() => setTab(t)}
               className={`px-5 py-2 rounded-xl font-semibold transition ${tab === t ? "bg-blue-600 text-white" : "bg-white text-gray-600 hover:bg-gray-50"}`}>
-              {t === "raportari" ? `📬 Raportări ${raportari.filter(r => !r.verificat).length > 0 ? `(${raportari.filter(r => !r.verificat).length})` : ""}` : t === "farmacii" ? "🏥 Farmacii" : t === "produse" ? "💊 Produse" : "💰 Prețuri"}
+              {t === "import" ? "📥 Import" : t === "raportari" ? `📬 Raportări ${raportari.filter(r => !r.verificat).length > 0 ? `(${raportari.filter(r => !r.verificat).length})` : ""}` : t === "farmacii" ? "🏥 Farmacii" : t === "produse" ? "💊 Produse" : "💰 Prețuri"}
             </button>
           ))}
         </div>
