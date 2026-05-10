@@ -7,6 +7,15 @@ const PAROLA_ADMIN = "admin1234";
 type Farmacie = { id: number; nume: string; adresa: string; oras: string; telefon: string };
 type Produs = { id: number; nume: string; categorie: string };
 type Pret = { id: number; farmacie_id: number; produs_id: number; pret: number };
+async function descarcaTemplate() {
+  const csv = "Nume Produs,Categorie,Farmacie,Pret\nNurofen 400mg x 12 comprimate,Analgezice,Catena,18.50\nParacetamol 500mg x 20 comprimate,Analgezice,Helpnet,9.00";
+  const blob = new Blob([csv], { type: "text/csv" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "template-produse.csv";
+  a.click();
+}
 type Raportare = { id: number; farmacie_nume: string; produs_nume: string; pret_raportat: number; observatii: string; creat_la: string; verificat: boolean };
 
 export default function Admin() {
@@ -80,7 +89,7 @@ export default function Admin() {
 
         {/* Tabs */}
         <div className="flex gap-2 mb-6 flex-wrap">
-          {["raportari", "farmacii", "produse", "preturi"].map(t => (
+          {["import", "raportari", "farmacii", "produse", "preturi"].map(t => (
             <button key={t} onClick={() => setTab(t)}
               className={`px-5 py-2 rounded-xl font-semibold transition ${tab === t ? "bg-blue-600 text-white" : "bg-white text-gray-600 hover:bg-gray-50"}`}>
               {t === "raportari" ? `📬 Raportări ${raportari.filter(r => !r.verificat).length > 0 ? `(${raportari.filter(r => !r.verificat).length})` : ""}` : t === "farmacii" ? "🏥 Farmacii" : t === "produse" ? "💊 Produse" : "💰 Prețuri"}
@@ -88,6 +97,30 @@ export default function Admin() {
           ))}
         </div>
 
+        {tab === "import" && (
+  <div className="bg-white rounded-2xl shadow p-6">
+    <h2 className="text-lg font-bold mb-2">📥 Import Produse din Excel/CSV</h2>
+    <p className="text-sm text-gray-400 mb-4">Completează template-ul și încarcă fișierul pentru a adăuga produse în masă.</p>
+    <button onClick={descarcaTemplate}
+      className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl font-semibold mb-6 w-full">
+      ⬇️ Descarcă Template CSV
+    </button>
+    <div className="border-2 border-dashed border-gray-200 rounded-xl p-6 text-center">
+      <p className="text-gray-400 mb-3">Încarcă fișierul completat</p>
+      <input type="file" accept=".xlsx,.csv" onChange={async (e) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        const formData = new FormData();
+        formData.append("file", file);
+        const res = await fetch("/api/import", { method: "POST", body: formData });
+        const data = await res.json();
+        if (data.succes) arataMesaj(`✅ ${data.adaugate} produse importate din ${data.total}!`);
+        else arataMesaj(`❌ Eroare: ${data.eroare}`);
+      }} className="border rounded-xl px-4 py-2 text-sm" />
+    </div>
+  </div>
+)}
+        
         {/* Raportari */}
         {tab === "raportari" && (
           <div className="bg-white rounded-2xl shadow p-6">
